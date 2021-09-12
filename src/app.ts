@@ -10,8 +10,11 @@ import logger from 'morgan';
 import cors from 'cors';
 
 
-import usersRouter from './routes/users';
+import jenisRouter from './routes/jenis';
+import stokRouter from './routes/stok';
+import pembeliRouter from './routes/pembeli';
 import transaksiRouter from './routes/transaksi';
+import detilRouter from './routes/detil';
 
 const app = express();
 
@@ -27,8 +30,11 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+app.use('/jenis', jenisRouter);
+app.use('/stok', stokRouter);
+app.use('/pembeli', pembeliRouter);
 app.use('/transaksi', transaksiRouter);
-app.use('/users', usersRouter);
+app.use('/detil', detilRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response, next: NextFunction) {
