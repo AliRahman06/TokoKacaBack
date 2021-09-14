@@ -5,12 +5,13 @@ import Db from '../libs/db';
 /* GET home page. */
 router.get('/', async function(req: Request, res: Response, next: NextFunction) {
     try {
-      const d = await Db.query('SELECT stok_kaca.*, jenis_kaca.nama , jenis_kaca.panjang, jenis_kaca.lebar , jenis_kaca.tebal  FROM stok_kaca LEFT JOIN jenis_kaca ON stok_kaca.id_jenis_kaca = jenis_kaca.id');
+      const d = await Db.query('SELECT * FROM stok_kaca');
       res.json(d);
     } catch(err) {
       console.log(err);
     }
   });
+  
   
   router.post('/', async function(req: Request, res: Response) {
     const input = req.body;
