@@ -13,6 +13,17 @@ router.get('/', async function(req: Request, res: Response, next: NextFunction) 
       res.json({ message: process.env.DB_USER, status: true, timeStamp: 324234243 })
     }
   });
+
+router.get('/tampil', async function(req: Request, res: Response, next: NextFunction) {
+    try {
+      const d = await Db.query('SELECT transaksi.*, pembeli.nama , pembeli.hp, pembeli.alamat FROM transaksi LEFT JOIN pembeli ON transaksi.id_pembeli = pembeli.id');
+      res.json(d);
+    } catch(err) {
+      console.log(err);
+    } finally {
+      res.json({ message: process.env.DB_USER, status: true, timeStamp: 324234243 })
+    }
+  });
   
   router.post('/', async function(req: Request, res: Response) {
     const input = req.body;
