@@ -3,9 +3,9 @@ const router = express.Router();
 import Db from '../libs/db';
 
 /* GET home page. */
-router.get('/tampil', async function(req: Request, res: Response, next: NextFunction) {
+router.get('/', async function(req: Request, res: Response, next: NextFunction) {
     try {
-      const d = await Db.query('SELECT * FROM pembeli');
+      const d = await Db.query('SELECT * FROM transaksi');
       res.json(d);
     } catch(err) {
       console.log(err);
@@ -14,10 +14,10 @@ router.get('/tampil', async function(req: Request, res: Response, next: NextFunc
     }
   });
   
-  router.post('/tambah', async function(req: Request, res: Response) {
+  router.post('/', async function(req: Request, res: Response) {
     const input = req.body;
     try {
-      await Db.query('INSERT INTO todolist VALUES(NULL, ?, ?)', [input.isi, input.status])
+      await Db.query('INSERT INTO transaksi VALUES(NULL, ?, ?, ?, ?, ?)', [input.id_pembeli, input.tanggal, input.total, input.bayar, input.kembali])
     } catch(err) {
       
     } finally {
@@ -25,11 +25,11 @@ router.get('/tampil', async function(req: Request, res: Response, next: NextFunc
     }
   });
   
-  router.put('/edit/:id', async function(req: Request, res: Response) {
+  router.put('/:id', async function(req: Request, res: Response) {
     const input = req.body;
     const id = req.params.id;
     try {
-      await Db.query('UPDATE todolist SET isi = ?, status = ? WHERE todolist.id = ?', [input.isi, input.status, id])
+      await Db.query('UPDATE transaksi SET id_pembeli = ?, tanggal = ?, total = ?, bayar = ?, kembali = ? WHERE transaksi.id = ?', [input.id_pembeli, input.tanggal, input.total, input.bayar, input.kembali, id])
     } catch(err) {
       
     } finally {
@@ -37,10 +37,10 @@ router.get('/tampil', async function(req: Request, res: Response, next: NextFunc
     }
   });
   
-  router.delete('/hapus/:id', async function(req: Request, res: Response) {
+  router.delete('/:id', async function(req: Request, res: Response) {
     const id = req.params.id;
     try {
-      await Db.query('DELETE FROM todolist WHERE todolist.id = ?', [id])
+      await Db.query('DELETE FROM transaksi WHERE transaksi.id = ?', [id])
     } catch(err) {
       
     } finally {

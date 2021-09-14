@@ -3,7 +3,7 @@ const router = express.Router();
 import Db from '../libs/db';
 
 /* GET home page. */
-router.get('/tampil', async function(req: Request, res: Response, next: NextFunction) {
+router.get('/', async function(req: Request, res: Response, next: NextFunction) {
     try {
       const d = await Db.query('SELECT * FROM pembeli');
       res.json(d);
@@ -11,6 +11,40 @@ router.get('/tampil', async function(req: Request, res: Response, next: NextFunc
       console.log(err);
     } finally {
       res.json({ message: process.env.DB_USER, status: true, timeStamp: 324234243 })
+    }
+  });
+
+router.post('/', async function(req: Request, res: Response) {
+    const input = req.body;
+    try {
+      await Db.query('INSERT INTO pembeli VALUES(NULL, ?, ?, ?)', [input.nama, input.hp, input.alamat])
+    } catch(err) {
+      
+    } finally {
+      res.json({ message: 'oke' });
+    }
+  });
+  
+router.put('/:id', async function(req: Request, res: Response) {
+    const input = req.body;
+    const id = req.params.id;
+    try {
+      await Db.query('UPDATE pembeli SET nama = ?, hp = ?, alamat = ? WHERE pembeli.id = ?', [input.nama, input.hp, input.alamat, id])
+    } catch(err) {
+      
+    } finally {
+      res.json({ message: 'oke' });
+    }
+  });
+  
+router.delete('/:id', async function(req: Request, res: Response) {
+    const id = req.params.id;
+    try {
+      await Db.query('DELETE FROM pembeli WHERE pembeli.id = ?', [id])
+    } catch(err) {
+      
+    } finally {
+      res.json({ message: 'oke' });
     }
   });
 

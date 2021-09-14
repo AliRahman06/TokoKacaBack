@@ -5,7 +5,7 @@ import Db from '../libs/db';
 /* GET home page. */
 router.get('/', async function(req: Request, res: Response, next: NextFunction) {
     try {
-      const d = await Db.query('SELECT stok_kaca.*, jenis_kaca.nama FROM stok_kaca LEFT JOIN jenis_kaca ON stok_kaca.id_jenis_kaca = jenis_kaca.id');
+      const d = await Db.query('SELECT stok_kaca.*, jenis_kaca.nama , jenis_kaca.panjang, jenis_kaca.lebar , jenis_kaca.tebal  FROM stok_kaca LEFT JOIN jenis_kaca ON stok_kaca.id_jenis_kaca = jenis_kaca.id');
       res.json(d);
     } catch(err) {
       console.log(err);
@@ -15,7 +15,7 @@ router.get('/', async function(req: Request, res: Response, next: NextFunction) 
   router.post('/', async function(req: Request, res: Response) {
     const input = req.body;
     try {
-      await Db.query('INSERT INTO stok_kaca VALUES(NULL, ?, ?, ?, ?)', [input.idJenis, input.tanggal, input.stok, input.harga])
+      await Db.query('INSERT INTO stok_kaca VALUES(NULL, ?, ?, ?, ?)', [input.id_jenis_kaca, input.tanggal, input.stok, input.harga])
     } catch(err) {
       console.log(err);
     } finally {
@@ -27,7 +27,7 @@ router.get('/', async function(req: Request, res: Response, next: NextFunction) 
     const input = req.body;
     const id = req.params.id;
     try {
-      await Db.query('UPDATE stok_kaca SET id_jenis_kaca = ?, stok = ?, harga = ? WHERE id = ?', [input.idJenis, input.stok, input.harga, id])
+      await Db.query('UPDATE stok_kaca SET id_jenis_kaca = ?, stok = ?, harga = ? WHERE id = ?', [input.id_jenis_kaca, input.stok, input.harga, id])
     } catch(err) {
       console.log(err);
     } finally {
