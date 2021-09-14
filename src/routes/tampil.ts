@@ -23,7 +23,6 @@ import Db from '../libs/db';
     });
 
     router.get('/detil', async function(req: Request, res: Response, next: NextFunction) {
-    const id = req.params.id;
     try {
         const d = await Db.query('SELECT detil_transaksi.*, transaksi.tanggal, transaksi.total, transaksi.bayar, transaksi.kembali, jenis_kaca.nama FROM detil_transaksi LEFT JOIN transaksi ON detil_transaksi.id_transaksi = transaksi.id LEFT JOIN jenis_kaca ON detil_transaksi.id_jenis_kaca= jenis_kaca.id');
         res.json(d);
@@ -33,7 +32,6 @@ import Db from '../libs/db';
     });
 
     router.get('/perdetil', async function(req: Request, res: Response, next: NextFunction) {
-    const id = req.params.id;
     try {
         const d = await Db.query('SELECT detil_transaksi.*, jenis_kaca.nama FROM detil_transaksi LEFT JOIN jenis_kaca ON detil_transaksi.id_jenis_kaca = jenis_kaca.id');
         res.json(d);
@@ -43,7 +41,6 @@ import Db from '../libs/db';
     });
 
     router.get('/transaksi', async function(req: Request, res: Response, next: NextFunction) {
-    const id = req.params.id;
     try {
         const d = await Db.query('SELECT transaksi.*, pembeli.nama, pembeli.hp, pembeli.alamat FROM transaksi LEFT JOIN pembeli ON transaksi.id_pembeli = pembeli.id');
         res.json(d);
@@ -62,6 +59,16 @@ import Db from '../libs/db';
     }
     });
 
+    router.get('/subpembeli/:id', async function(req: Request, res: Response, next: NextFunction) {
+    const id = req.params.id;
+    try {
+        const d = await Db.query('SELECT * FROM pembeli WHERE id = ?', [id]);
+        res.json(d);
+    } catch(err) {
+        console.log(err);
+    }
+    });
+    
     router.get('/stok', async function(req: Request, res: Response, next: NextFunction) {
     const id = req.params.id;
     try {
