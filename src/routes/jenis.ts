@@ -6,7 +6,8 @@ import Db from '../libs/db';
 router.get('/', async function(req: Request, res: Response, next: NextFunction) {
   try {
     const d = await Db.query('SELECT * FROM jenis_kaca');
-    res.json(d);
+    const d2 = await Db.query('SELECT id, id_jenis_kaca, stok FROM stok_kaca');
+    res.json([d, d2]);
   } catch(err) {
     console.log(err);
   } finally {

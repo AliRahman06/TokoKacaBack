@@ -1,0 +1,129 @@
+
+- pembeli
+
+GET
+localhost:8181/pembeli/
+menampilkan isi tabel pembeli
+contoh hasil:
+[{"id":1,"nama":"yaqin","hp":"081234567","alamat":"gak tau dimana"},{"id":2,"nama":"saya","hp":"12345","alamat":"di sana"},{"id":3,"nama":"Ali","hp":"081234567","alamat":"tlanakan"}]
+
+localhost:8181/pembeli/:nama
+menampilakan pembeli berdasarkan nama
+contoh hasil:
+[{"id":3,"nama":"Ali","hp":"081234567","alamat":"tlanakan"}]
+
+POST
+localhost:8181/pembeli/
+menambah pembeli
+
+PUT 
+localhost:8181/pembeli/:id
+mengubah pembeli berdasarkan id
+
+DELETE
+localhost:8181/pembeli/:id
+menghpus pembeli berdasarkan id
+
+
+
+- transaksi
+
+GET
+localhost:8181/transaksi/
+menampilakan isi tabel transaksi
+contoh hasil:
+[{"id":1,"id_pembeli":1,"tanggal":"2021-09-12T02:35:30.000Z","total":500000,"bayar":600000,"kembali":100000},{"id":4,"id_pembeli":1,"tanggal":"2021-09-12T03:05:09.000Z","total":300000,"bayar":600000,"kembali":300000}]
+
+localhost:8181/transaksi/tampil
+menampilakan isi relasi tabel transaksi dan pembeli
+contoh hasil:
+[{"id":1,"id_pembeli":1,"tanggal":"2021-09-12T02:35:30.000Z","total":500000,"bayar":600000,"kembali":100000,"nama":"yaqin","hp":"081234567","alamat":"gak tau dimana"},{"id":4,"id_pembeli":1,"tanggal":"2021-09-12T03:05:09.000Z","total":300000,"bayar":600000,"kembali":300000,"nama":"yaqin","hp":"081234567","alamat":"gak tau dimana"}]
+
+POST
+localhost:8181/transaksi/
+menambah isi transaksi
+
+PUT
+localhost:8181/transaksi/:id
+mengubah isi transaksi berdasarkan id
+
+DELETE
+localhost:8181/transaksi/:id
+menghapus isi transaksi berdasarkan id
+
+
+
+- detil transaksi
+
+GET
+localhost:8181/detil/
+menampilakan semua isi detil_transaksi
+contoh hasil:
+[{"id":1,"id_transaksi":1,"id_jenis_kaca":1,"panjang":30,"lebar":30,"biaya":50000},{"id":2,"id_transaksi":1,"id_jenis_kaca":1,"panjang":45,"lebar":45,"biaya":75000},{"id":3,"id_transaksi":1,"id_jenis_kaca":1,"panjang":60,"lebar":60,"biaya":120000}]
+
+localhost:8181/detil/tampil/:id
+menampilkan isi relasi 3 tabel detil_transaksi, transaksi dan jenis_kaca berdasarkan id
+contoh hasil:
+[{"id":1,"id_transaksi":1,"id_jenis_kaca":1,"panjang":30,"lebar":30,"biaya":50000,"tanggal":"2021-09-12T02:35:30.000Z","total":500000,"bayar":600000,"kembali":100000,"nama":"Wagyu A-5"},{"id":2,"id_transaksi":1,"id_jenis_kaca":1,"panjang":45,"lebar":45,"biaya":75000,"tanggal":"2021-09-12T02:35:30.000Z","total":500000,"bayar":600000,"kembali":100000,"nama":"Wagyu A-5"},{"id":3,"id_transaksi":1,"id_jenis_kaca":1,"panjang":60,"lebar":60,"biaya":120000,"tanggal":"2021-09-12T02:35:30.000Z","total":500000,"bayar":600000,"kembali":100000,"nama":"Wagyu A-5"}]
+
+localhost:8181/detil/relasi4/:id
+menampilkan isi relasi 4 tabel detil_transaksi, jenis_kaca, transaksi dan pembeli berdasarkan id
+contoh hasil:
+[{"id":1,"id_transaksi":1,"id_jenis_kaca":1,"panjang":30,"lebar":30,"biaya":50000,"tanggal":"2021-09-12T02:35:30.000Z","total":500000,"bayar":600000,"kembali":100000,"nama_kaca":"Wagyu A-5","nama":"yaqin","hp":"081234567","alamat":"gak tau dimana"},{"id":2,"id_transaksi":1,"id_jenis_kaca":1,"panjang":45,"lebar":45,"biaya":75000,"tanggal":"2021-09-12T02:35:30.000Z","total":500000,"bayar":600000,"kembali":100000,"nama_kaca":"Wagyu A-5","nama":"yaqin","hp":"081234567","alamat":"gak tau dimana"},{"id":3,"id_transaksi":1,"id_jenis_kaca":1,"panjang":60,"lebar":60,"biaya":120000,"tanggal":"2021-09-12T02:35:30.000Z","total":500000,"bayar":600000,"kembali":100000,"nama_kaca":"Wagyu A-5","nama":"yaqin","hp":"081234567","alamat":"gak tau dimana"}]
+
+POST
+localhost:8181/detil/
+menambah isi dari detil_transaksi
+
+PUT
+localhost:8181/detil/:id
+mengubah isi dari tabel detil_transaksi berdasarkan id
+
+DELETE
+localhost:8181/detil/:id
+menghapus isi detil_transaksi berdasarkan id
+
+
+
+- jenis kaca
+
+GET
+localhost:8181/jenis/
+menampilkan isi tabel jenis_kaca dan id, stok dari tabel stok_kaca
+contoh hasil:
+[[{"id":1,"nama":"Wagyu A-5","panjang":120,"lebar":90,"tebal":10}],[{"id":1,"id_jenis_kaca":1,"stok":10}]]
+
+POST
+localhost:8181/jenis/
+menambah isi dari jenis_kaca
+
+PUT
+localhost:8181/jenis/:id
+mengubah isi dari jenis_kaca berdasarkan id
+
+DELETE
+localhost:8181/jenis/:id
+menghapus isi dari jenis_kaca berdasarkan id
+
+
+
+- stok kaca
+
+GET
+localhost:8181/stok/
+menampilkan semua isi stok_kaca
+contoh hasil:
+[{"id":1,"id_jenis_kaca":1,"tanggal":"2021-09-11T17:00:00.000Z","stok":10,"harga":10000}]
+
+
+POST
+localhost:8181/stok/
+menambah isi dari stok_kaca
+
+PUT
+localhost:8181/stok/:id
+mengubah isi dari stok_kaca berdasarkan id
+
+DELETE
+localhost:8181/stok/:id
+menghapus isi dari stok_kaca berdasarkan id
