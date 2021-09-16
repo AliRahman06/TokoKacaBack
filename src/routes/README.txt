@@ -20,5 +20,6 @@ Page 2 :
 /pembeli : Untuk request GET , POST pembeli pertransaksi (tabel kanan bagian atas)
 
 Page 3 :
-
+/tampil/stok : Untuk req GET menampilkan nama jenis kaca beserta stok yang dimiliki (Tabel bagian kiri)
+/tampil/history/:id : Untuk req GET menampilkan resource stok sesuai id yang hendak di edit jumlah stoknya (Tabel bagian kanan)
  

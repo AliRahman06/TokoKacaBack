@@ -43,7 +43,17 @@ import Db from '../libs/db';
     router.get('/subtransaksi/:id', async function(req: Request, res: Response, next: NextFunction) {
     const id = req.params.id;
     try {
-        const d = await Db.query('SELECT detil_transaksi.*, transaksi.tanggal, transaksi.total, transaksi.bayar, transaksi.kembali, jenis_kaca.nama AS nama_kaca FROM detil_transaksi LEFT JOIN transaksi ON detil_transaksi.id_transaksi = transaksi.id LEFT JOIN jenis_kaca ON detil_transaksi.id_jenis_kaca= jenis_kaca.id WHERE id_transaksi = ?', [id]);
+        const d = await Db.query('SELECT detil_transaksi.*, transaksi.tanggal, transaksi.total, transaksi.bayar, transaksi.kembali, pembeli.nama, pembeli.hp, pembeli.alamat, jenis_kaca.nama AS nama_kaca FROM detil_transaksi LEFT JOIN transaksi ON detil_transaksi.id_transaksi = transaksi.id LEFT JOIN pembeli ON transaksi.id_pembeli = pembeli.id LEFT JOIN jenis_kaca ON detil_transaksi.id_jenis_kaca= jenis_kaca.id WHERE id_transaksi = ?', [id]);
+        res.json(d);
+    } catch(err) {
+        console.log(err);
+    }
+    });
+
+    router.get('/subpembeli/:id', async function(req: Request, res: Response, next: NextFunction) {
+    const id = req.params.id;
+    try {
+        const d = await Db.query('SELECT * FROM pembeli WHERE id = ?', [id]);
         res.json(d);
     } catch(err) {
         console.log(err);
@@ -52,8 +62,10 @@ import Db from '../libs/db';
     
     router.get('/stok', async function(req: Request, res: Response, next: NextFunction) {
     try {
-        const d = await Db.query('SELECT * FROM jenis_kaca','SELECT stok FROM stok_kaca');
-        res.json(d);
+        const d = await Db.query('SELECT * FROM jenis_kaca');
+        const d2 = await Db.query('SELECT stok FROM stok_kaca');
+        res.json([d,d2]);
+
     } catch(err) {
         console.log(err);
     }

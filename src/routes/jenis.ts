@@ -9,10 +9,8 @@ router.get('/', async function(req: Request, res: Response, next: NextFunction) 
     res.json(d);
   } catch(err) {
     console.log(err);
-  } finally {
-    res.json({ message: 'Oke' })
   }
-});
+  });
 
 router.post('/', async function(req: Request, res: Response) {
   const input = req.body;
