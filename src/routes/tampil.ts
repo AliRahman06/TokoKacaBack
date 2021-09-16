@@ -60,15 +60,29 @@ import Db from '../libs/db';
     }
     });
     
-    router.get('/stok', async function(req: Request, res: Response, next: NextFunction) {
+    router.get('/jenis', async function(req: Request, res: Response, next: NextFunction) {
     try {
         const d = await Db.query('SELECT * FROM jenis_kaca');
-        const d2 = await Db.query('SELECT stok FROM stok_kaca');
-        res.json([d,d2]);
-
+        for ( const item of d){
+          const d2 = await Db.query('SELECT SUM(stok) AS total FROM stok_kaca WHERE id_jenis_kaca = ?', [item.id]);
+        item.stok = d2[0].total || 0;
+        }
+        res.json([d]);
     } catch(err) {
         console.log(err);
     }
     });
+
+    router.get('/stok', async function(req: Request, res: Response, next: NextFunction) {
+      try {
+          const d = await Db.query('SELECT jenis_kaca.*, (SELECT SUM(stok_kaca.stok) FROM stok_kaca WHERE stok_kaca.id_jenis_kaca = jenis_kaca.id) AS total FROM jenis_kaca');
+          for ( const item of d){
+            item.stok = d[0].total || 0;
+          }
+          res.json([d]);
+      } catch(err) {
+          console.log(err);
+      }
+      });
 
 export default router;
