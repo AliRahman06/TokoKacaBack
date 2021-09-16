@@ -14,10 +14,10 @@ router.get('/', async function(req: Request, res: Response, next: NextFunction) 
     }
   });
   
-  router.get('/nama', async function(req: Request, res: Response, next: NextFunction) {
-    const input = req.body;
+  router.get('/:nama', async function(req: Request, res: Response, next: NextFunction) {
+    const nama = req.params.nama;
     try {
-      const d = await Db.query('SELECT id, nama, hp, alamat FROM pembeli WHERE nama LIKE %?%',[input.nama]);
+      const d = await Db.query('SELECT id, nama, hp, alamat FROM pembeli WHERE nama LIKE ?',[nama]);
       res.json(d);
     } catch(err) {
       console.log(err);
