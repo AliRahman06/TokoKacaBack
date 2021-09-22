@@ -15,7 +15,6 @@ import stokRouter from './routes/stok';
 import pembeliRouter from './routes/pembeli';
 import transaksiRouter from './routes/transaksi';
 import detilRouter from './routes/detil';
-import tampilRouter from './routes/tampil'
 
 const app = express();
 
@@ -36,7 +35,6 @@ app.use('/stok', stokRouter);
 app.use('/pembeli', pembeliRouter);
 app.use('/transaksi', transaksiRouter);
 app.use('/detil', detilRouter);
-app.use('/tampil', tampilRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response, next: NextFunction) {

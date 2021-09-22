@@ -3,14 +3,28 @@ const router = express.Router();
 import Db from '../libs/db';
 
 /* GET home page. */
-router.get('/', async function(req: Request, res: Response, next: NextFunction) {
+  router.get('/history/:id', async function(req: Request, res: Response, next: NextFunction) {
     try {
-      const d = await Db.query('SELECT * FROM stok_kaca');
-      res.json(d);
+        const id = req.params.id;
+        let page = parseInt(req.query.page as string);
+        if(page || 0){
+            page = page
+        }else{
+            page = 1
+        }
+        let limit = parseInt(req.query.limit as string);
+        if(limit || 0){
+            limit = limit
+        }else{
+            limit = 5
+        }
+        const start = (page - 1) * limit;
+        const d = await Db.query('SELECT * FROM stok_kaca WHERE id_jenis_kaca = ? LIMIT ?,?', [id,start,limit]);
+        res.json(d);
     } catch(err) {
-      console.log(err);
+        console.log(err);
     }
-  });
+    });
   
   router.get('/harga', async function(req: Request, res: Response, next: NextFunction) {
     try {

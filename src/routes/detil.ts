@@ -3,18 +3,38 @@ const router = express.Router();
 import Db from '../libs/db';
 
 /* GET home page. */
-router.get('/', async function(req: Request, res: Response, next: NextFunction) {
+  router.get('/detil', async function(req: Request, res: Response, next: NextFunction) {
     try {
-      const d = await Db.query('SELECT * FROM detil_transaksi');
-      res.json(d);
+        const d = await Db.query('SELECT detil_transaksi.*, transaksi.tanggal, transaksi.total, transaksi.bayar, transaksi.kembali, jenis_kaca.nama FROM detil_transaksi LEFT JOIN transaksi ON detil_transaksi.id_transaksi = transaksi.id LEFT JOIN jenis_kaca ON detil_transaksi.id_jenis_kaca= jenis_kaca.id');
+        res.json(d);
     } catch(err) {
-      console.log(err);
-    } finally {
-      res.json({ message: process.env.DB_USER, status: true, timeStamp: 324234243 })
+        console.log(err);
     }
-  });
-
-  router.get('/tampil/:id', async function(req: Request, res: Response, next: NextFunction) {
+    });
+  
+  router.get('/perdetil', async function(req: Request, res: Response, next: NextFunction) {
+    try {
+        let page = parseInt(req.query.page as string);
+        if(page || 0){
+            page = page
+        }else{
+            page = 1
+        }
+        let limit = parseInt(req.query.limit as string);
+        if(limit || 0){
+            limit = limit
+        }else{
+            limit = 5
+        }
+        const start = (page - 1) * limit;
+        const d = await Db.query('SELECT detil_transaksi.*, jenis_kaca.nama FROM detil_transaksi LEFT JOIN jenis_kaca ON detil_transaksi.id_jenis_kaca = jenis_kaca.id LIMIT ?,?', [start,limit]);
+        res.json(d);
+    } catch(err) {
+        console.log(err);
+    }
+    });
+  
+      router.get('/tampil/:id', async function(req: Request, res: Response, next: NextFunction) {
       const id = req.params.id;
     try {
       const d = await Db.query('SELECT detil_transaksi.*, transaksi.tanggal , transaksi.total, transaksi.bayar, transaksi.kembali, jenis_kaca.nama FROM detil_transaksi LEFT JOIN transaksi ON detil_transaksi.id_transaksi = transaksi.id LEFT JOIN jenis_kaca ON detil_transaksi.id_jenis_kaca = jenis_kaca.id WHERE id_transaksi = ?', [id]);
