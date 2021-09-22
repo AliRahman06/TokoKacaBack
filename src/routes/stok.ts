@@ -17,7 +17,7 @@ router.get('/', async function(req: Request, res: Response, next: NextFunction) 
       const id = req.query.id;
       const panjang = parseInt(req.query.panjang as string);
       const lebar = parseInt(req.query.lebar as string);
-      const d = await Db.query('SELECT MAX(stok_kaca.harga/(jenis_kaca.panjang * jenis_kaca.lebar)) AS harga_satuan FROM stok_kaca LEFT JOIN jenis_kaca ON stok_kaca.id_jenis_kaca = jenis_kaca.id WHERE id_jenis_kaca = ?', [id]);
+      const d = await Db.query('SELECT (stok_kaca.harga/(jenis_kaca.panjang * jenis_kaca.lebar)) AS harga_satuan FROM stok_kaca LEFT JOIN jenis_kaca ON stok_kaca.id_jenis_kaca = jenis_kaca.id WHERE id_jenis_kaca = ?', [id]);
       res.json({
         harga : (panjang+10) * (lebar+10) * d[0].harga_satuan
       });
