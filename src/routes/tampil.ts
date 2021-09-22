@@ -76,9 +76,6 @@ import Db from '../libs/db';
     router.get('/stok', async function(req: Request, res: Response, next: NextFunction) {
       try {
           const d = await Db.query('SELECT jenis_kaca.*, (SELECT SUM(stok_kaca.stok) FROM stok_kaca WHERE stok_kaca.id_jenis_kaca = jenis_kaca.id) AS total FROM jenis_kaca');
-          for ( const item of d){
-            item.stok = d[0].total || 0;
-          }
           res.json([d]);
       } catch(err) {
           console.log(err);

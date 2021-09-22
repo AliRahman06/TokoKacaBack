@@ -12,6 +12,19 @@ router.get('/', async function(req: Request, res: Response, next: NextFunction) 
     }
   });
   
+  router.get('/harga', async function(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.query.id;
+      const panjang = parseInt(req.query.panjang as string);
+      const lebar = parseInt(req.query.lebar as string);
+      const d = await Db.query('SELECT (stok_kaca.harga/(jenis_kaca.panjang * jenis_kaca.lebar)) AS harga_satuan FROM stok_kaca LEFT JOIN jenis_kaca ON stok_kaca.id_jenis_kaca = jenis_kaca.id WHERE id_jenis_kaca = ?', [id]);
+      res.json({
+        harga : panjang * lebar * d[0].harga_satuan
+      });
+  } catch(err) {
+      console.log(err);
+  }
+  });
   
   router.post('/', async function(req: Request, res: Response) {
     const input = req.body;
