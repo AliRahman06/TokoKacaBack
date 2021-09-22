@@ -32,7 +32,7 @@ import Db from '../libs/db';
           const d2 = await Db.query('SELECT SUM(stok) AS total FROM stok_kaca WHERE id_jenis_kaca = ?', [item.id]);
         item.stok = d2[0].total || 0;
         }
-        res.json([d]);
+        res.json(d);
     } catch(err) {
         console.log(err);
     }
