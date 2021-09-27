@@ -4,27 +4,18 @@ import Db from '../libs/db';
 
 /* GET home page. */
 router.get('/', async function(req: Request, res: Response, next: NextFunction) {
-    try {
-      const d = await Db.query('SELECT * FROM pembeli');
-      res.json(d);
-    } catch(err) {
-      console.log(err);
-    } finally {
-      res.json({ message: process.env.DB_USER, status: true, timeStamp: 324234243 })
-    }
-  });
-  
-  router.get('/:nama', async function(req: Request, res: Response, next: NextFunction) {
-    const nama = req.params.nama;
-    try {
-      const d = await Db.query('SELECT id, nama, hp, alamat FROM pembeli WHERE nama LIKE ?',[nama]);
-      res.json(d);
-    } catch(err) {
-      console.log(err);
-    } finally {
-      res.json({ message: process.env.DB_USER, status: true, timeStamp: 324234243 })
-    }
-  });
+  const nama = req.query.nama;
+  try {
+    const d = await Db.query('SELECT * FROM pembeli WHERE nama LIKE  ?', [`%${nama}%`]);
+    console.log(d);
+    res.json(d);
+  } catch(err) {
+    console.log(err);
+  } finally {
+    res.json({ message: process.env.DB_USER, status: true, timeStamp: 324234243 })
+  }
+});
+
 router.post('/', async function(req: Request, res: Response) {
     const input = req.body;
     try {
