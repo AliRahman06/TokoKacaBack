@@ -31,7 +31,7 @@ import Db from '../libs/db';
       const id = req.query.id;
       const panjang = parseInt(req.query.panjang as string);
       const lebar = parseInt(req.query.lebar as string);
-      const d = await Db.query('SELECT (stok_kaca.harga/(jenis_kaca.panjang * jenis_kaca.lebar)) AS harga_satuan FROM stok_kaca LEFT JOIN jenis_kaca ON stok_kaca.id_jenis_kaca = jenis_kaca.id WHERE id_jenis_kaca = ?', [id]);
+      const d = await Db.query('SELECT (stok_kaca.harga_jual/(jenis_kaca.panjang * jenis_kaca.lebar)) AS harga_satuan FROM stok_kaca LEFT JOIN jenis_kaca ON stok_kaca.id_jenis_kaca = jenis_kaca.id WHERE id_jenis_kaca = ?', [id]);
       res.json({
         harga : (panjang+10) * (lebar+10) * d[0].harga_satuan
       });
@@ -43,7 +43,7 @@ import Db from '../libs/db';
   router.post('/', async function(req: Request, res: Response) {
     const input = req.body;
     try {
-      await Db.query('INSERT INTO stok_kaca VALUES(NULL, ?, ?, ?, ?)', [input.id_jenis_kaca, input.tanggal, input.stok, input.harga])
+      await Db.query('INSERT INTO stok_kaca VALUES(NULL, ?, ?, ?, ?, ?)', [input.id_jenis_kaca, input.tanggal, input.stok, input.harga_beli, input.harga_jual])
     } catch(err) {
       console.log(err);
     } finally {
@@ -55,7 +55,7 @@ import Db from '../libs/db';
     const input = req.body;
     const id = req.params.id;
     try {
-      await Db.query('UPDATE stok_kaca SET id_jenis_kaca = ?, stok = ?, harga = ? WHERE id = ?', [input.id_jenis_kaca, input.stok, input.harga, id])
+      await Db.query('UPDATE stok_kaca SET id_jenis_kaca = ?, stok = ?, harga_beli = ?, harga_jual = ? WHERE id = ?', [input.id_jenis_kaca, input.stok, input.harga_beli, input.harga_jual, id])
     } catch(err) {
       console.log(err);
     } finally {

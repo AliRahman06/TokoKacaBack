@@ -46,6 +46,20 @@ router.get('/tampil', async function(req: Request, res: Response, next: NextFunc
     }
   });
   
+  router.post('/tambah', async function(req: Request, res: Response) {
+    const input = req.body;
+    try {
+      const d = await Db.query('INSERT INTO pembeli VALUES(NULL, ?, ?, ?)', [input.nama, input.hp, input.alamat])
+      const d2 = await Db.query('INSERT INTO transaksi VALUES(NULL, ?, ?, ?, ?, ?)', [input.id_pembeli, input.tanggal, input.total, input.bayar, input.kembali])
+      const d3 = await Db.query('INSERT INTO detil_transaksi VALUES(NULL, ?, ?, ?, ?, ?)', [input.id_transaksi, input.id_jenis_kaca, input.panjang, input.lebar, input.biaya])
+      res.json([d,d2,d3])
+    } catch(err) {
+
+    } finally {
+      res.json({ message: 'oke' });
+    }
+  });
+
   router.post('/', async function(req: Request, res: Response) {
     const input = req.body;
     try {
