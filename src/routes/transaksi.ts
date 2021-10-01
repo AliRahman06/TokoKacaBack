@@ -25,6 +25,15 @@ import Db from '../libs/db';
     }
   });
 
+  router.get ('/data', async function(req: Request, res: Response, next: NextFunction) {
+    try{
+      const d = await Db.query('SELECT COUNT(id) as data from transaksi');
+      res.json(d);
+    } catch(err) {
+      console.log(err)
+    }
+  });
+  
   router.get('/subtransaksi/:id', async function(req: Request, res: Response, next: NextFunction) {
     const id = req.params.id;
     try {
