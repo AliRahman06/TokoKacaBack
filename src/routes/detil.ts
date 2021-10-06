@@ -11,6 +11,15 @@ import Db from '../libs/db';
         console.log(err);
     }
     });
+
+    router.get ('/data', async function(req: Request, res: Response, next: NextFunction) {
+      try{
+        const d = await Db.query('SELECT COUNT(id) as data from detil_transaksi');
+        res.json(d);
+      } catch(err) {
+        console.log(err)
+      }
+    });
   
   router.get('/perdetil', async function(req: Request, res: Response, next: NextFunction) {
     try {

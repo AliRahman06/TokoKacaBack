@@ -35,6 +35,15 @@ router.get('/data/:id', async function(req: Request, res: Response, next: NextFu
         console.log(err);
     }
     });
+
+    router.get ('/data', async function(req: Request, res: Response, next: NextFunction) {
+      try{
+        const d = await Db.query('SELECT COUNT(id) as data from stok_kaca');
+        res.json(d);
+      } catch(err) {
+        console.log(err)
+      }
+    });
   
   router.get('/harga', async function(req: Request, res: Response, next: NextFunction) {
     try {
