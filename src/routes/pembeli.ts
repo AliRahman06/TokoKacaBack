@@ -16,7 +16,7 @@ router.get('/', async function(req: Request, res: Response, next: NextFunction) 
   }
 });
 
-router.get('/', async function(req: Request, res: Response, next: NextFunction) {
+router.get('/data', async function(req: Request, res: Response, next: NextFunction) {
   try {
     const d = await Db.query('SELECT * FROM pembeli');
     console.log(d);

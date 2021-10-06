@@ -3,6 +3,16 @@ const router = express.Router();
 import Db from '../libs/db';
 
 /* GET home page. */
+router.get('/data/:id', async function(req: Request, res: Response, next: NextFunction) {
+  try {
+      const id = req.params.id;
+      const d = await Db.query('SELECT * FROM stok_kaca WHERE id = ? ', [id]);
+      res.json(d);
+  } catch(err) {
+      console.log(err);
+  }
+  });
+
   router.get('/history/:id', async function(req: Request, res: Response, next: NextFunction) {
     try {
         const id = req.params.id;

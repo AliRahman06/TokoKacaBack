@@ -12,22 +12,14 @@ import Db from '../libs/db';
     }
   });
 
-  router.get('/harga', async function(req: Request, res: Response, next: NextFunction) {
-    try {
-      // const id = req.query.id;
-      // const panjang = parseInt(req.query.panjang as string);
-      // const lebar = parseInt(req.query.lebar as string);
-      const d = await Db.query('SELECT stok_kaca.id_jenis_kaca, (stok_kaca.harga/(jenis_kaca.panjang * jenis_kaca.lebar)) AS harga_satuan, jenis_kaca.nama FROM stok_kaca LEFT JOIN jenis_kaca ON stok_kaca.id_jenis_kaca = jenis_kaca.id');
-      // const id = req.query.id;
-      // const panjang = parseInt(req.query.panjang as string);
-      // const lebar = parseInt(req.query.lebar as string);
-      // const d = await Db.query('SELECT stok_kaca.id_jenis_kaca, stok_kaca.harga, jenis_kaca.nama FROM stok_kaca LEFT JOIN jenis_kaca ON stok_kaca.id_jenis_kaca = jenis_kaca.id');
-      // for( const item of d){
-      //   const d2 = await Db.query('SELECT (stok_kaca.harga/(jenis_kaca.panjang * jenis_kaca.lebar)) AS harga_satuan FROM stok_kaca LEFT JOIN jenis_kaca ON stok_kaca.id_jenis_kaca = jenis_kaca.id WHERE id_jenis_kaca = ?', [id]);
+  router.get('/data/:id',async function(req: Request , res: Response, next: NextFunction) {
+    try{
+      const id = req.params.id;
+      const d = await Db.query('SELECT * FROM jenis_kaca WHERE id = ? ' ,[id]);
       res.json(d);
-  } catch(err) {
-      console.log(err);
-  }
+    }catch(err){
+      console.log(err)
+    }
   });
 
   router.get('/listjenis', async function(req: Request, res: Response, next: NextFunction) {
