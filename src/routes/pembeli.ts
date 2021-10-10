@@ -6,7 +6,7 @@ import Db from '../libs/db';
 router.get('/', async function(req: Request, res: Response, next: NextFunction) {
   const nama = req.query.nama;
   try {
-    const d = await Db.query('SELECT * FROM pembeli WHERE nama LIKE  ?', [`%${nama}%`]);
+    const d = await Db.query('SELECT * FROM pembeli');
     console.log(d);
     res.json(d);
   } catch(err) {
@@ -16,9 +16,10 @@ router.get('/', async function(req: Request, res: Response, next: NextFunction) 
   }
 });
 
-router.get('/data', async function(req: Request, res: Response, next: NextFunction) {
+router.get('/nama', async function(req: Request, res: Response, next: NextFunction) {
+  const nama = req.query.nama;
   try {
-    const d = await Db.query('SELECT * FROM pembeli');
+    const d = await Db.query('SELECT * FROM pembeli WHERE nama LIKE  ?', [`%${nama}%`]);
     console.log(d);
     res.json(d);
   } catch(err) {

@@ -3,10 +3,10 @@ const router = express.Router();
 import Db from '../libs/db';
 
 /* GET home page. */
-router.get('/data/:id', async function(req: Request, res: Response, next: NextFunction) {
+router.get('/pagingHistory/:id', async function(req: Request, res: Response, next: NextFunction) {
   try {
       const id = req.params.id;
-      const d = await Db.query('SELECT * FROM stok_kaca WHERE id = ? ', [id]);
+      const d = await Db.query('SELECT * FROM stok_kaca WHERE id_jenis_kaca = ? ', [id]);
       res.json(d);
   } catch(err) {
       console.log(err);
@@ -38,7 +38,7 @@ router.get('/data/:id', async function(req: Request, res: Response, next: NextFu
 
     router.get ('/data', async function(req: Request, res: Response, next: NextFunction) {
       try{
-        const d = await Db.query('SELECT COUNT(id) as data from stok_kaca');
+        const d = await Db.query('SELECT COUNT(id) AS data FROM stok_kaca');
         res.json(d);
       } catch(err) {
         console.log(err)
@@ -74,7 +74,7 @@ router.get('/data/:id', async function(req: Request, res: Response, next: NextFu
     const input = req.body;
     const id = req.params.id;
     try {
-      await Db.query('UPDATE stok_kaca SET id_jenis_kaca = ?, stok = ?, harga_beli = ?, harga_jual = ? WHERE id = ?', [input.id_jenis_kaca, input.stok, input.harga_beli, input.harga_jual, id])
+      await Db.query('UPDATE stok_kaca SET id_jenis_kaca = ?, tanggal = ?, stok = ?, harga_beli = ?, harga_jual = ? WHERE id = ?', [input.id_jenis_kaca, input.tanggal, input.stok, input.harga_beli, input.harga_jual, id])
     } catch(err) {
       console.log(err);
     } finally {
@@ -85,7 +85,7 @@ router.get('/data/:id', async function(req: Request, res: Response, next: NextFu
   router.delete('/:id', async function(req: Request, res: Response) {
     const id = req.params.id;
     try {
-      await Db.query('DELETE FROM stok_kaca WHERE id = ?', [id])
+      await Db.query('DELETE FROM stok_kaca WHERE id_jenis_kaca = ?', [id])
     } catch(err) {
       console.log(err);
     } finally {

@@ -1,3 +1,4 @@
+import { error } from 'console';
 import express, { NextFunction, Request, Response } from 'express';
 const router = express.Router();
 import Db from '../libs/db';
@@ -27,7 +28,7 @@ import Db from '../libs/db';
 
   router.get ('/data', async function(req: Request, res: Response, next: NextFunction) {
     try{
-      const d = await Db.query('SELECT COUNT(id) as data from transaksi');
+      const d = await Db.query('SELECT COUNT(id) AS data FROM transaksi');
       res.json(d);
     } catch(err) {
       console.log(err)
@@ -58,13 +59,16 @@ router.get('/tampil', async function(req: Request, res: Response, next: NextFunc
   router.post('/tambah', async function(req: Request, res: Response) {
     const input = req.body;
     try {
-      const d = await Db.query('INSERT INTO pembeli VALUES(NULL, ?, ?, ?)', [input.nama, input.hp, input.alamat])
-      const d2 = await Db.query('INSERT INTO transaksi VALUES(NULL, ?, ?, ?, ?, ?)', [input.id_pembeli, input.tanggal, input.total, input.bayar, input.kembali])
-      
-      const d3 = await Db.query('INSERT INTO detil_transaksi VALUES(NULL, ?, ?, ?, ?, ?)', [input.id_transaksi, input.id_jenis_kaca, input.panjang, input.lebar, input.biaya])
-      res.json([d,d2,d3])
-    } catch(err) {
+      input.transaksi.forEach((e: any) => {
+        
+      });
+      await Db.query('INSERT INTO pembeli VALUES(NULL, ?, ?, ?)', [input.nama, input.hp, input.alamat])
+      await Db.query('INSERT INTO transaksi VALUES(NULL, ?, ?, ?, ?, ?)', [input.id_pembeli, input.tanggal, input.total, input.bayar, input.kembali])
 
+      await Db.query('INSERT INTO detil_transaksi VALUES(NULL, ?, ?, ?, ?, ?)',[input.id_transaksi, input.id_jenis_kaca, input.panjang, input.lebar, input.biaya])
+      res.json({ message: 'oke' })
+    } catch(err) {
+      error(err)
     } finally {
       res.json({ message: 'oke' });
     }

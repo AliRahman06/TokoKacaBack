@@ -5,17 +5,17 @@ import Db from '../libs/db';
 /* GET home page. */
   router.get('/',async function(req: Request , res: Response, next: NextFunction) {
     try{
-      const d = await Db.query('SELECT * FROM jenis_kaca');
+      const id = req.query.id;
+      const d = await Db.query('SELECT * FROM jenis_kaca WHERE id = ?', [id]);
       res.json(d);
     }catch(err){
       console.log(err)
     }
   });
 
-  router.get('/data/:id',async function(req: Request , res: Response, next: NextFunction) {
+  router.get('/totalJenis',async function(req: Request , res: Response, next: NextFunction) {
     try{
-      const id = req.params.id;
-      const d = await Db.query('SELECT * FROM jenis_kaca WHERE id = ? ' ,[id]);
+      const d = await Db.query('SELECT * FROM jenis_kaca');
       res.json(d);
     }catch(err){
       console.log(err)
@@ -24,7 +24,7 @@ import Db from '../libs/db';
 
   router.get ('/data', async function(req: Request, res: Response, next: NextFunction) {
     try{
-      const d = await Db.query('SELECT COUNT(id) as data from jenis_kaca');
+      const d = await Db.query('SELECT COUNT(id) AS data FROM jenis_kaca');
       res.json(d);
     } catch(err) {
       console.log(err)
