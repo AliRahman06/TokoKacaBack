@@ -1,5 +1,7 @@
 import { error } from 'console';
+import { defaultMaxListeners } from 'events';
 import express, { NextFunction, Request, Response } from 'express';
+import { type } from 'os';
 const router = express.Router();
 import Db from '../libs/db';
 
@@ -59,14 +61,20 @@ router.get('/tampil', async function(req: Request, res: Response, next: NextFunc
   router.post('/tambah', async function(req: Request, res: Response) {
     const input = req.body;
     try {
-      input.transaksi.forEach((e: any) => {
-        
-      });
+      let id_pembeli;
+      let id_transaksi: Promise<any>;
+      if(parseInt(input.id_pembeli)>0){
+        id_pembeli = id_pembeli;
+      }else{
       await Db.query('INSERT INTO pembeli VALUES(NULL, ?, ?, ?)', [input.nama, input.hp, input.alamat])
-      await Db.query('INSERT INTO transaksi VALUES(NULL, ?, ?, ?, ?, ?)', [input.id_pembeli, input.tanggal, input.total, input.bayar, input.kembali])
-
-      await Db.query('INSERT INTO detil_transaksi VALUES(NULL, ?, ?, ?, ?, ?)',[input.id_transaksi, input.id_jenis_kaca, input.panjang, input.lebar, input.biaya])
-      res.json({ message: 'oke' })
+      id_pembeli = parseInt(await Db.query('SELECT LAST_INSERT_ID()'));
+      }
+      await Db.query('INSERT INTO transaksi VALUES(NULL, ?, ?, ?, ?, ?)', [id_pembeli, input.tanggal, input.total, input.bayar, input.kembali])
+      id_transaksi = await Db.query('SELECT LAST_INSERT_ID()');
+      input.detil.forEach(async (detil: any) => {
+        await Db.query('INSERT INTO detil_transaksi VALUES(NULL, ?, ?, ?, ?, ?)',[id_transaksi, detil.id_jenis_kaca, detil.panjang, detil.lebar, detil.biaya])
+      });
+       res.json({ message: 'oke' })
     } catch(err) {
       error(err)
     } finally {
