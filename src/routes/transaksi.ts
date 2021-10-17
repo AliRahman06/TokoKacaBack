@@ -30,7 +30,7 @@ import Db from '../libs/db';
 
   router.get ('/data', async function(req: Request, res: Response, next: NextFunction) {
     try{
-      const d = await Db.query('SELECT COUNT(id) AS data FROM transaksi');
+      const d = await Db.query('SELECT transaksi.*, pembeli.nama, pembeli.hp, pembeli.alamat FROM transaksi LEFT JOIN pembeli ON transaksi.id_pembeli = pembeli.id ');
       res.json(d);
     } catch(err) {
       console.log(err)
