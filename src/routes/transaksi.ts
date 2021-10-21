@@ -64,13 +64,13 @@ router.get('/tampil', async function(req: Request, res: Response, next: NextFunc
       let id_pembeli;
       let id_transaksi: Promise<any>;
       if(parseInt(input.id_pembeli)>0){
-        id_pembeli = id_pembeli;
+        id_pembeli = input.id_pembeli;
       }else{
-      await Db.query('INSERT INTO pembeli VALUES(NULL, ?, ?, ?)', [input.nama, input.hp, input.alamat])
-      id_pembeli = parseInt(await Db.query('SELECT LAST_INSERT_ID()'));
+      const p = await Db.query('INSERT INTO pembeli VALUES(NULL, ?, ?, ?)', [input.nama, input.hp, input.alamat]);
+      id_pembeli = p.insertId;
       }
-      await Db.query('INSERT INTO transaksi VALUES(NULL, ?, ?, ?, ?, ?)', [id_pembeli, input.tanggal, input.total, input.bayar, input.kembali])
-      id_transaksi = await Db.query('SELECT LAST_INSERT_ID()');
+      const t = await Db.query('INSERT INTO transaksi VALUES(NULL, ?, ?, ?, ?, ?)', [id_pembeli, input.tanggal, input.total, input.bayar, input.kembali]);
+      id_transaksi = t.insertId;
       input.detil.forEach(async (detil: any) => {
         await Db.query('INSERT INTO detil_transaksi VALUES(NULL, ?, ?, ?, ?, ?)',[id_transaksi, detil.id_jenis_kaca, detil.panjang, detil.lebar, detil.biaya])
       });
